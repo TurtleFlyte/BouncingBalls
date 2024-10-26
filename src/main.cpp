@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 
+// Vector2 Ball Simulator Renderer
+
 int main()
 {
     auto window = sf::RenderWindow({1920u, 1080u}, "CMake SFML Project");

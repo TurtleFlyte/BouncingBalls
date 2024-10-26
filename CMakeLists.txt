@@ -14,10 +14,10 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_executable(main src/main.cpp
-        src/Ball.cpp
-        src/Ball.h
-        src/Vector2.cpp
-        src/Vector2.h)
+        lib/Ball.cpp
+        lib/Ball.h
+        lib/Vector2.cpp
+        lib/Vector2.h)
 target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
 
