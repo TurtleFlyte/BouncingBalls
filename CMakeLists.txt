@@ -17,7 +17,11 @@ add_executable(main src/main.cpp
         lib/Ball.cpp
         lib/Ball.h
         lib/Vector2.cpp
-        lib/Vector2.h)
+        lib/Vector2.h
+        lib/Simulator.cpp
+        lib/Simulator.h
+        lib/Renderer.cpp
+        lib/Renderer.h)
 target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
 

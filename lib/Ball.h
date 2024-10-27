@@ -6,6 +6,7 @@
  *      SFML shape
  *
  * Implements getters for velocity, mass, radius, and shape
+ *      Setter for velocity
  */
 
 #ifndef CMAKESFMLPROJECT_BALL_H
@@ -21,10 +22,14 @@ private:
     float radius;
     sf::CircleShape shape;
 public:
+    Ball();   // Random ball constructor to be implemented
     Ball(float xVel, float yVel, float mass, float radius, float xPos, float yPos);
 
     Vector2 getVelocity() const;
-    float getmass() const;
+    void setVelocity(Vector2 &newVelocity);
+    void move();        // Changes ball position based on velocity
+
+    float getMass() const;
     float getRadius() const;
     sf::CircleShape getShape() const;
 };

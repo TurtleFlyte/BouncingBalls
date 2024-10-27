@@ -2,10 +2,16 @@
 
 // Vector2 Ball Simulator Renderer
 
+#include "../lib/Simulator.h"
+#include "../lib/Renderer.h"
+
 int main()
 {
-    auto window = sf::RenderWindow({1920u, 1080u}, "CMake SFML Project");
+    auto window = sf::RenderWindow({640u, 480u}, "CMake SFML Project");
     window.setFramerateLimit(144);
+
+    Simulator sim;
+    Renderer renderer(&window);
 
     while (window.isOpen())
     {
@@ -17,7 +23,12 @@ int main()
             }
         }
 
+        sim.updatePositions();
+
         window.clear();
+
+        renderer.renderBalls(sim.getBallVector());
+
         window.display();
     }
 }

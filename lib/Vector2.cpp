@@ -23,6 +23,10 @@ float Vector2::operator*(Vector2 const &other) const{
     return x*other.x + y*other.y;
 }
 
+Vector2 Vector2::operator*(float const &other) const{
+    return {x*other, y*other};
+}
+
 Vector2 Vector2::operator-(Vector2 const &other) const{
     return {x-other.x,y-other.y};
 }

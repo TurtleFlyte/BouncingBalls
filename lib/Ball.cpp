@@ -1,8 +1,9 @@
-//
-// Created by Andrew Polkinhorn on 10/25/24.
-//
-
 #include "Ball.h"
+#include <random>
+
+Ball::Ball(){
+
+}
 
 Ball::Ball(float xVel, float yVel, float mass, float radius, float xPos, float yPos){
     velocity = {xVel, yVel};
@@ -16,7 +17,15 @@ Vector2 Ball::getVelocity() const{
     return velocity;
 }
 
-float Ball::getmass() const{
+void Ball::setVelocity(Vector2 &newVelocity){
+    velocity = newVelocity;
+}
+
+void Ball::move(){
+    shape.setPosition(shape.getPosition().x+velocity.x, shape.getPosition().y+velocity.y);
+}
+
+float Ball::getMass() const{
     return mass;
 }
 

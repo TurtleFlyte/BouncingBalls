@@ -20,10 +20,11 @@ public:
     Vector2();
     Vector2(float x, float y);
 
-    float getMagnitude() const;     // Returns magnitude of vector
-    Vector2 normalize() const;      // Returns a normalized version of vector
-    float operator*(Vector2 const &other) const;      // Returns the dot product of vector and reference other
-    Vector2 operator-(Vector2 const &other) const;
+    float getMagnitude() const;     // Returns magnitude of the vector
+    Vector2 normalize() const;      // Returns a normalized version of the vector
+    float operator*(Vector2 const &other) const;        // Returns the dot product of vector and reference other
+    Vector2 operator*(float const &other) const;        // Returns the vector of vector scalar mulitplication
+    Vector2 operator-(Vector2 const &other) const;      // Subtracts vector components then returns a vector
 };
 
 #endif //BOUNCINGBALLS_VECTOR2_H
