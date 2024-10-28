@@ -35,11 +35,7 @@ int main()
         // Update all ball velocities and positions
         sim.updatePositions();
 
-        window.clear();
-
         // Send balls to renderer to be rendered
         renderer.renderBalls(sim.getBallVector());
-
-        window.display();
     }
 }

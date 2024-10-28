@@ -16,7 +16,7 @@ void Simulator::checkForBallCollision(Ball &ball1, Ball &ball2){
     float distance = sqrt((pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.y - pos2.y) * (pos1.y - pos2.y));
 
     // Collision is happening if distance is less than the sum of both radii
-    if(distance < ball1.getRadius()+ball2.getRadius()){
+    if(distance <= ball1.getRadius()+ball2.getRadius()){
         // Calculate ball1's velocity vector
         Vector2 ball1Velocity = ball1.getVelocity()
                                 -((pos1 - pos2)
@@ -32,9 +32,6 @@ void Simulator::checkForBallCollision(Ball &ball1, Ball &ball2){
         // Set both balls velocities
         ball1.setVelocity(ball1Velocity);
         ball2.setVelocity(ball2Velocity);
-
-        ball1.getShape().setPosition(ball1.getLastGoodPos().x, ball1.getLastGoodPos().y);
-        ball2.getShape().setPosition(ball2.getLastGoodPos().x, ball2.getLastGoodPos().y);
     }
 }
 
@@ -53,8 +50,6 @@ void Simulator::checkForWallCollision(Ball &ball){
 
     // Set velocity
     ball.setVelocity(ballVelocity);
-
-    ball.getShape().setPosition(ball.getLastGoodPos().x, ball.getLastGoodPos().y);
 }
 
 Simulator::Simulator(){
@@ -64,11 +59,11 @@ Simulator::Simulator(){
 }
 
 void Simulator::updatePositions(){
-    for (int i = 0; i < ballVector.size()-1; ++i) {
+    for (int i = 0; i < ballVector.size(); ++i) {
         // Move each ball
         ballVector[i].move();
 
-        // Check for collision between each unique pair of balls
+        // Check for collision between each unique pair of balls (except for last)
         for (int j = i+1; j < ballVector.size(); ++j) {
             checkForBallCollision(ballVector[i],ballVector[j]);
         }
@@ -76,12 +71,6 @@ void Simulator::updatePositions(){
         // Check for collision between each ball and wall
         checkForWallCollision(ballVector[i]);
     }
-
-    // Move the last ball
-    ballVector[ballVector.size()-1].move();
-
-    // Check for collision between last ball and wall
-    checkForWallCollision(ballVector[ballVector.size()-1]);
 }
 
 void Simulator::addBall(const Ball &newBall){

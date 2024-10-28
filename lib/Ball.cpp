@@ -20,7 +20,6 @@ Ball::Ball(float xPos, float yPos){
     // Set radius and positions
     shape.setRadius(radius);
     shape.setPosition(xPos,yPos);
-    lastGoodPos = {xPos,yPos};
 }
 
 Ball::Ball(float xVel, float yVel, float mass, float radius, float xPos, float yPos){
@@ -40,8 +39,6 @@ void Ball::setVelocity(Vector2 &newVelocity){
 }
 
 void Ball::move(){
-    lastGoodPos = {shape.getPosition().x, shape.getPosition().y};
-
     shape.setPosition(shape.getPosition().x+velocity.x, shape.getPosition().y+velocity.y);
 }
 
@@ -55,8 +52,4 @@ float Ball::getRadius() const{
 
 sf::CircleShape Ball::getShape() const{
     return shape;
-}
-
-Vector2 Ball::getLastGoodPos() const{
-    return lastGoodPos;
 }

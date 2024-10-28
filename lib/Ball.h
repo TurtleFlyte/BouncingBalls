@@ -21,8 +21,6 @@ private:
     float mass;
     float radius;
     sf::CircleShape shape;
-    Vector2 lastGoodPos;
-
 public:
     Ball(float xPos, float yPos);   // Random ball constructor
     Ball(float xVel, float yVel, float mass, float radius, float xPos, float yPos);
@@ -34,7 +32,6 @@ public:
     float getMass() const;
     float getRadius() const;
     sf::CircleShape getShape() const;
-    Vector2 getLastGoodPos() const;
 };
 
 #endif //BOUNCINGBALLS_BALL_H
