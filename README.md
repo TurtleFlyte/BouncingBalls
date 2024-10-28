@@ -16,7 +16,7 @@ Built using the [SFML CMake template](https://github.com/SFML/cmake-sfml-project
 1. Clone this GitHub reop
    
    ```
-   git clone https://github.com/raphsenn/elastic-collision
+   git clone https://github.com/TurtleFlyte/BouncingBalls
    ```
 1. Configure and build your project
     Run these commands in the root directory of the project.
