@@ -1,8 +1,26 @@
 #include "Ball.h"
 #include <random>
 
-Ball::Ball(){
+Ball::Ball(float xPos, float yPos){
+    std::random_device rd;
+    std::mt19937 gen(rd());     // Seed
+    // Construct distributions
+    std::uniform_real_distribution<float> velocityDis(-2, 2);
+    std::uniform_real_distribution<float> massRadiusDis(20, 35);
+    std::uniform_int_distribution<int> colorDis(0,255);
 
+    velocity = {velocityDis(gen), velocityDis(gen)};    // Random velocity
+    radius = massRadiusDis(gen);            // Random radius
+    mass = massRadiusDis(gen);              // Random mass
+
+    // Random color
+    sf::Color color(colorDis(gen),colorDis(gen),colorDis(gen), 255);
+    shape.setFillColor(color);
+
+    // Set radius and positions
+    shape.setRadius(radius);
+    shape.setPosition(xPos,yPos);
+    lastGoodPos = {xPos,yPos};
 }
 
 Ball::Ball(float xVel, float yVel, float mass, float radius, float xPos, float yPos){
@@ -22,6 +40,8 @@ void Ball::setVelocity(Vector2 &newVelocity){
 }
 
 void Ball::move(){
+    lastGoodPos = {shape.getPosition().x, shape.getPosition().y};
+
     shape.setPosition(shape.getPosition().x+velocity.x, shape.getPosition().y+velocity.y);
 }
 
@@ -35,4 +55,8 @@ float Ball::getRadius() const{
 
 sf::CircleShape Ball::getShape() const{
     return shape;
+}
+
+Vector2 Ball::getLastGoodPos() const{
+    return lastGoodPos;
 }

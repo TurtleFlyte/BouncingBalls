@@ -2,68 +2,86 @@
 #include <iostream>
 
 void Simulator::checkForBallCollision(Ball &ball1, Ball &ball2){
-    // Collision with other ball
-    Vector2 ball1Pos = {ball1.getShape().getPosition().x+ball1.getRadius(), ball1.getShape().getPosition().y+ball1.getRadius()};
-    Vector2 ball2Pos = {ball2.getShape().getPosition().x+ball2.getRadius(), ball2.getShape().getPosition().y+ball2.getRadius()};
+    // Get both ball positions
+    Vector2 pos1 = {ball1.getShape().getPosition().x + ball1.getRadius(), ball1.getShape().getPosition().y + ball1.getRadius()};
+    Vector2 pos2 = {ball2.getShape().getPosition().x + ball2.getRadius(), ball2.getShape().getPosition().y + ball2.getRadius()};
 
-    float distance = sqrt((ball1Pos.x-ball2Pos.x)*(ball1Pos.x-ball2Pos.x) + (ball1Pos.y-ball2Pos.y)*(ball1Pos.y-ball2Pos.y));
+    float m1 = ball1.getMass();
+    float m2 = ball2.getMass();
 
+    Vector2 v1 = ball1.getVelocity();
+    Vector2 v2 = ball2.getVelocity();
+
+    // Get distance between the two balls
+    float distance = sqrt((pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.y - pos2.y) * (pos1.y - pos2.y));
+
+    // Collision is happening if distance is less than the sum of both radii
     if(distance < ball1.getRadius()+ball2.getRadius()){
+        // Calculate ball1's velocity vector
         Vector2 ball1Velocity = ball1.getVelocity()
-                -((ball1Pos-ball2Pos)
-                *((2* ball2.getMass()) / (ball1.getMass() + ball2.getMass()))
-                *(((ball1.getVelocity()-ball2.getVelocity())*(ball1Pos-ball2Pos))/((ball1Pos-ball2Pos).getMagnitude()*(ball1Pos-ball2Pos).getMagnitude())));
+                                -((pos1 - pos2)
+                                  *((2* m2) / (m1 + m2))
+                                  *(((v1-v2)*(pos1 - pos2)) / ((pos1 - pos2).getMagnitude() * (pos1 - pos2).getMagnitude())));
 
+        // Calculate ball2's velocity vector
         Vector2 ball2Velocity = ball2.getVelocity()
-                                -((ball2Pos-ball1Pos)
-                                  *((2* ball1.getMass()) / (ball1.getMass() + ball2.getMass()))
-                                  *(((ball2.getVelocity()-ball1.getVelocity())*(ball2Pos-ball1Pos))/((ball2Pos-ball1Pos).getMagnitude()*(ball2Pos-ball1Pos).getMagnitude())));
+                                -((pos2 - pos1)
+                                  *((2* m1) / (m1 + m2))
+                                  *(((v2-v1)*(pos2 - pos1)) / ((pos2 - pos1).getMagnitude() * (pos2 - pos1).getMagnitude())));
 
+        // Set both balls velocities
         ball1.setVelocity(ball1Velocity);
         ball2.setVelocity(ball2Velocity);
+
+        ball1.getShape().setPosition(ball1.getLastGoodPos().x, ball1.getLastGoodPos().y);
+        ball2.getShape().setPosition(ball2.getLastGoodPos().x, ball2.getLastGoodPos().y);
     }
 }
 
 void Simulator::checkForWallCollision(Ball &ball){
+    // Get balls position and velocity
     Vector2 ballVelocity = ball.getVelocity();
     Vector2 ballPos = {ball.getShape().getPosition().x+ball.getRadius(), ball.getShape().getPosition().y+ball.getRadius()};
 
-    if(ballPos.y < ball.getRadius()) ballVelocity = {ballVelocity.x, -ballVelocity.y};
-    if(ballPos.x < ball.getRadius()) ballVelocity = {-ballVelocity.x, ballVelocity.y};
-    if(ballPos.y > 480-ball.getRadius()) ballVelocity = {ballVelocity.x, -ballVelocity.y};
-    if(ballPos.x > 640-ball.getRadius()) ballVelocity = {-ballVelocity.x, ballVelocity.y};
+    // Transform velocity based on wall hit
+    if(ballPos.y < ball.getRadius() || ballPos.y > 720-ball.getRadius()) {
+        ballVelocity.y *= -1.f;
+    }
+    if(ballPos.x < ball.getRadius() || ballPos.x > 960-ball.getRadius()) {
+        ballVelocity.x *= -1.f;
+    }
 
+    // Set velocity
     ball.setVelocity(ballVelocity);
+
+    ball.getShape().setPosition(ball.getLastGoodPos().x, ball.getLastGoodPos().y);
 }
 
-Simulator::Simulator() {
-    Ball ball1(5,3.5,20,15,200,200);
-    Ball ball2(-8,4,20,20,300,300);
-    Ball ball3(5,3.5,20,15,190 ,200);
+Simulator::Simulator(){
+    Ball startingBall(300,300);
 
-    ballVector.push_back(ball1);
-    ballVector.push_back(ball2);
-    ballVector.push_back(ball3);
+    addBall(startingBall);
 }
-
-//Simulator::Simulator(int numberOfBalls){
-//    for (int i = 0; i < numberOfBalls; ++i) {
-//        ballVector.emplace_back(Ball());
-//    }
-//}
 
 void Simulator::updatePositions(){
     for (int i = 0; i < ballVector.size()-1; ++i) {
+        // Move each ball
+        ballVector[i].move();
+
+        // Check for collision between each unique pair of balls
         for (int j = i+1; j < ballVector.size(); ++j) {
             checkForBallCollision(ballVector[i],ballVector[j]);
         }
 
+        // Check for collision between each ball and wall
         checkForWallCollision(ballVector[i]);
-        ballVector[i].move();
     }
 
-    checkForWallCollision(ballVector[ballVector.size()-1]);
+    // Move the last ball
     ballVector[ballVector.size()-1].move();
+
+    // Check for collision between last ball and wall
+    checkForWallCollision(ballVector[ballVector.size()-1]);
 }
 
 void Simulator::addBall(const Ball &newBall){

@@ -9,8 +9,8 @@
  *      Setter for velocity
  */
 
-#ifndef CMAKESFMLPROJECT_BALL_H
-#define CMAKESFMLPROJECT_BALL_H
+#ifndef BOUNCINGBALLS_BALL_H
+#define BOUNCINGBALLS_BALL_H
 
 #include "Vector2.h"
 #include <SFML/Graphics/CircleShape.hpp>
@@ -21,8 +21,10 @@ private:
     float mass;
     float radius;
     sf::CircleShape shape;
+    Vector2 lastGoodPos;
+
 public:
-    Ball();   // Random ball constructor to be implemented
+    Ball(float xPos, float yPos);   // Random ball constructor
     Ball(float xVel, float yVel, float mass, float radius, float xPos, float yPos);
 
     Vector2 getVelocity() const;
@@ -32,6 +34,7 @@ public:
     float getMass() const;
     float getRadius() const;
     sf::CircleShape getShape() const;
+    Vector2 getLastGoodPos() const;
 };
 
-#endif //CMAKESFMLPROJECT_BALL_H
+#endif //BOUNCINGBALLS_BALL_H

@@ -1,5 +1,5 @@
 /*
- * Renderer that renders all balls in ballVector using SFML window
+ * Renders all balls in ballVector to SFML window
  */
 
 #ifndef BOUNCINGBALLS_RENDERER_H

@@ -7,7 +7,7 @@
 
 int main()
 {
-    auto window = sf::RenderWindow({640u, 480u}, "CMake SFML Project");
+    auto window = sf::RenderWindow({960u, 720u}, "CMake SFML Project");
     window.setFramerateLimit(144);
 
     Simulator sim;
@@ -21,12 +21,23 @@ int main()
             {
                 window.close();
             }
+
+            // Check if left mouse button is being pressed
+            if(event.type == sf::Event::MouseButtonPressed){
+                if(event.mouseButton.button == sf::Mouse::Left){
+                    // Add new ball to simulation
+                    Ball newBall(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+                    sim.addBall(newBall);
+                }
+            }
         }
 
+        // Update all ball velocities and positions
         sim.updatePositions();
 
         window.clear();
 
+        // Send balls to renderer to be rendered
         renderer.renderBalls(sim.getBallVector());
 
         window.display();

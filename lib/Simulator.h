@@ -14,11 +14,10 @@ class Simulator{
 private:
     std::vector<Ball> ballVector;
 
-    void checkForBallCollision(Ball &ball1, Ball &ball2);       // Checks for collision between two balls and updates velocities
-    void checkForWallCollision(Ball &ball);                     // Checks for collision on wall
+    static void checkForBallCollision(Ball &ball1, Ball &ball2);       // Checks for collision between two balls and updates velocities
+    static void checkForWallCollision(Ball &ball);                     // Checks for collision on wall
 public:
     Simulator();
-//    Simulator(int numberOfBalls);
 
     void updatePositions();     // Updates the position of each ball based on velocity after a possible collision
     void addBall(const Ball &newBall);
